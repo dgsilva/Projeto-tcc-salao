@@ -40,11 +40,11 @@ public class SwaggerConfiguration {
 	 */
 	private ApiInfo apiInfo() {
 		return new ApiInfo(
-				"API - Salão de beleza",
+				"API - Salão de beleza - TCC",
 				"Sistema de API desenvolvido em SprignBoot com Hibernate e JPA",
 				"Versão 1.0",
-				"",
-				new Contact("Projeto tcc faculdade feuc", "Andrey, Diego,Felipe Torneire e Felipe Guimarães", 
+				"Terms of Service",
+				new Contact("Andrey,Diego,Felipe Torneire e Felipe Guimarães", "", 
 						""),
 				"Licença da API",
 				"",
