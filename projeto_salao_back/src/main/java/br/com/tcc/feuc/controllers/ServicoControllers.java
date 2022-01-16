@@ -1,9 +1,11 @@
 package br.com.tcc.feuc.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.tcc.feuc.entities.Profissional;
 import br.com.tcc.feuc.entities.Servico;
 import br.com.tcc.feuc.repositories.ServicoRepository;
 
@@ -44,4 +47,12 @@ public class ServicoControllers {
     	
     	return ResponseEntity.ok(servico);
     }
+	
+	@CrossOrigin("*")
+	@GetMapping("/{idServico}")
+	public Servico buscarPorId(@PathVariable Long idServico) {
+		Optional<Servico> resultadoPorId = servicoRepository.findById(idServico);
+		Servico servico = resultadoPorId.get();
+		return servico;
+	}
 }

@@ -6,6 +6,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+
+import com.sun.istack.NotNull;
 
 import lombok.Data;
 @Data
@@ -16,6 +19,8 @@ public class Cliente {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idCliente;
 	@Column(length = 100, nullable = false)
+	@NotNull
+	@NotBlank
 	private String nome;
 	@Column(length = 15, unique = true)
 	private String cpf;

@@ -1,9 +1,11 @@
 package br.com.tcc.feuc.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,4 +47,11 @@ public class ProfissionalControllers {
     	return ResponseEntity.ok(profissional);
     }
 
+	@CrossOrigin("*")
+	@GetMapping("/{idProfissional}")
+	public Profissional buscarPorId(@PathVariable Long idProfissional) {
+		Optional<Profissional> resultadoPorId = profissionalRepository.findById(idProfissional);
+		Profissional profissional = resultadoPorId.get();
+		return profissional;
+	}
 }

@@ -2,9 +2,12 @@ package br.com.tcc.feuc.controllers;
 
 
 import java.util.List;
+import java.util.Optional;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,4 +48,12 @@ public class AgendamentoControllers {
     	
     	return ResponseEntity.ok(agendamento);
     }
+	
+	@CrossOrigin("*")
+	@GetMapping("/{idAgendamento}")
+	public Agendamento buscarPorId(@PathVariable Long idAgendamento) {
+		Optional<Agendamento> resultadoPorId = agendamentoRepository.findById(idAgendamento);
+		Agendamento agendamento = resultadoPorId.get();
+		return agendamento;
+	}
 }
