@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,13 +23,15 @@ import br.com.tcc.feuc.response.LoginResponse;
 import br.com.tcc.feuc.security.JwtSecurity;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.swagger.annotations.ApiOperation;
 
 @RestController
 public class LoginController {
 
 	@Autowired
 	private AdmRepository admRepositorio;
-	
+	@ApiOperation("Realizado autenticação pelo login ")
+	@CrossOrigin("*")
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public ResponseEntity<LoginResponse>post(@RequestBody LoginPostRequest request){
 		

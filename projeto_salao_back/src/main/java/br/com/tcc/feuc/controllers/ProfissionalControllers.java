@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.tcc.feuc.entities.Profissional;
 import br.com.tcc.feuc.repositories.ProfissionalRepository;
+import br.com.tcc.feuc.service.ProfissionalService;
+import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("profissionais")
@@ -24,18 +26,26 @@ public class ProfissionalControllers {
 	@Autowired
 	private ProfissionalRepository profissionalRepository;
 	
+	@Autowired
+	private ProfissionalService profissionalService;
+	
+	@ApiOperation("Retornado a listas do profissionais ")
+	@CrossOrigin("*")
 	@GetMapping
 	public List<Profissional>findAll(){
-		List<Profissional> profissionalReturn = profissionalRepository.findAll();
+		List<Profissional> profissionalReturn = profissionalService.Listar();
 		return profissionalReturn;
 	}
-	
+	@ApiOperation("Salvando os dados do Profissional")
+	@CrossOrigin("*")
 	@PostMapping
 	public Profissional create(@RequestBody Profissional profissional) {
-		Profissional profi = profissionalRepository.save(profissional);
+		Profissional profi = profissionalService.Salvar(profissional);
 		return profi;
 	}
 	
+	@ApiOperation("Alterado os dados do profissional")
+	@CrossOrigin("*")
 	@PutMapping("/{idProfissional}")
     public ResponseEntity<Profissional> atualizar(@PathVariable Long idProfissional, @RequestBody Profissional profissional) {
       if(!profissionalRepository.existsById(idProfissional)) {
@@ -47,6 +57,7 @@ public class ProfissionalControllers {
     	return ResponseEntity.ok(profissional);
     }
 
+	@ApiOperation("Retornado a listas pelo id do profissional ")
 	@CrossOrigin("*")
 	@GetMapping("/{idProfissional}")
 	public Profissional buscarPorId(@PathVariable Long idProfissional) {
