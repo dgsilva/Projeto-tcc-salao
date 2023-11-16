@@ -14,10 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.tcc.feuc.entities.Profissional;
 import br.com.tcc.feuc.entities.Servico;
 import br.com.tcc.feuc.repositories.ServicoRepository;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
 @RequestMapping("servicos")
@@ -26,21 +25,21 @@ public class ServicoControllers {
 	@Autowired
 	private ServicoRepository servicoRepository;
 	
-	@ApiOperation("Retornado a listas dos serviços ")
+	@Operation(summary = "Retornado a listas dos serviços ")
 	@CrossOrigin("*")
 	@GetMapping
 	public List<Servico>findAll(){
 		List<Servico> servicoListar = servicoRepository.findAll();
 		return servicoListar;
 	}
-	@ApiOperation("Salvando os dados dos serviços")
+	@Operation(summary = "Salvando os dados dos serviços")
 	@CrossOrigin("*")
 	@PostMapping
 	public Servico create(@RequestBody Servico servico) {
 		Servico servicoSave = servicoRepository.save(servico);
 		return servicoSave;
 	}
-	@ApiOperation("Alterado os dados dos serviços")
+	@Operation(summary = "Alterado os dados dos serviços")
 	@CrossOrigin("*")
 	@PutMapping("/{idServico}")
     public ResponseEntity<Servico> atualizar(@PathVariable Long idServico, @RequestBody Servico servico) {
@@ -52,7 +51,7 @@ public class ServicoControllers {
     	
     	return ResponseEntity.ok(servico);
     }
-	@ApiOperation("Retornado a busca por id do servicos ")
+	@Operation(summary = "Retornado a busca por id do servicos ")
 	@CrossOrigin("*")
 	@GetMapping("/{idServico}")
 	public Servico buscarPorId(@PathVariable Long idServico) {

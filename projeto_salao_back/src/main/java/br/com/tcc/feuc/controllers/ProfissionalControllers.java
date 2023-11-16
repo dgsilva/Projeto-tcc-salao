@@ -1,7 +1,6 @@
 package br.com.tcc.feuc.controllers;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,55 +13,45 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.tcc.feuc.dto.request.ProfissionalResquestDTO;
+import br.com.tcc.feuc.dto.request.ProfissionalUpdateDTO;
 import br.com.tcc.feuc.entities.Profissional;
-import br.com.tcc.feuc.repositories.ProfissionalRepository;
 import br.com.tcc.feuc.service.ProfissionalService;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
 @RequestMapping("profissionais")
 public class ProfissionalControllers {
 	
 	@Autowired
-	private ProfissionalRepository profissionalRepository;
-	
-	@Autowired
 	private ProfissionalService profissionalService;
 	
-	@ApiOperation("Retornado a listas do profissionais ")
+	@Operation(summary = "Retornado a listas do profissionais ")
 	@CrossOrigin("*")
 	@GetMapping
 	public List<Profissional>findAll(){
 		List<Profissional> profissionalReturn = profissionalService.Listar();
 		return profissionalReturn;
 	}
-	@ApiOperation("Salvando os dados do Profissional")
+	@Operation(summary = "Salvando os dados do Profissional")
 	@CrossOrigin("*")
 	@PostMapping
-	public Profissional create(@RequestBody Profissional profissional) {
-		Profissional profi = profissionalService.Salvar(profissional);
-		return profi;
+	public Profissional create(@RequestBody ProfissionalResquestDTO dto) {
+		return profissionalService.Salvar(dto);
 	}
 	
-	@ApiOperation("Alterado os dados do profissional")
+	@Operation(summary = "Alterado os dados do profissional")
 	@CrossOrigin("*")
 	@PutMapping("/{idProfissional}")
-    public ResponseEntity<Profissional> atualizar(@PathVariable Long idProfissional, @RequestBody Profissional profissional) {
-      if(!profissionalRepository.existsById(idProfissional)) {
-    	  return ResponseEntity.notFound().build();
-      }
-      profissional.setIdProfissional(idProfissional);
-      profissional = profissionalRepository.save(profissional);	
-    	
-    	return ResponseEntity.ok(profissional);
+    public ResponseEntity<ResponseEntity<Profissional>> atualizar(@PathVariable Long idProfissional, @RequestBody ProfissionalUpdateDTO dto) {
+		ResponseEntity<Profissional>dtoUpdate = profissionalService.atualizar(idProfissional, dto);
+    	return ResponseEntity.ok(dtoUpdate);
     }
 
-	@ApiOperation("Retornado a listas pelo id do profissional ")
+	@Operation(summary =  "Retornado a listas pelo id do profissional ")
 	@CrossOrigin("*")
 	@GetMapping("/{idProfissional}")
 	public Profissional buscarPorId(@PathVariable Long idProfissional) {
-		Optional<Profissional> resultadoPorId = profissionalRepository.findById(idProfissional);
-		Profissional profissional = resultadoPorId.get();
-		return profissional;
+		return  profissionalService.buscarPorId(idProfissional);
 	}
 }

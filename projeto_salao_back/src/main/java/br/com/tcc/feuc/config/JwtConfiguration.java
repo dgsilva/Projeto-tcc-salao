@@ -23,6 +23,7 @@ public class JwtConfiguration extends WebSecurityConfigurerAdapter {
 				.addFilterAfter(new JwtSecurity(), UsernamePasswordAuthenticationFilter.class)
 				.authorizeRequests()
 				.antMatchers(HttpMethod.POST, "/login").permitAll()
+				.antMatchers(HttpMethod.POST, "/cliente").permitAll()
 				.antMatchers(HttpMethod.OPTIONS, "/**").permitAll() 
 				.anyRequest()
 				.authenticated();
@@ -32,7 +33,7 @@ public class JwtConfiguration extends WebSecurityConfigurerAdapter {
 	private static final String[] SWAGGER = {
 			"/v2/api-docs", "/swagger-resources", "/swagger-resources/**", "/configuration/ui",
 			"/configuration/security", "/swagger-ui.html", "/webjars/**",
-			"/v3/api-docs/**", "/swagger-ui/**", "/actuator/health**","/actuator/prometheus**"
+			"/v3/api-docs/**", "/swagger-ui/**", "swagger-ui/index.html", "/actuator/health**","/actuator/prometheus**"
 	};
 
 	@Override

@@ -13,12 +13,15 @@ import javax.validation.constraints.NotBlank;
 import com.sun.istack.NotNull;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 @Data
+@NoArgsConstructor
 @Entity
 @Table(name = "cliente")
 public class Cliente {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long idCliente;
 	@Column(length = 100, nullable = false)
 	@NotNull

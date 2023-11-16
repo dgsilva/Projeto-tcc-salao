@@ -1,4 +1,4 @@
-package br.com.tcc.feuc.response;
+package br.com.tcc.feuc.dto.response;
 
 import lombok.Getter;
 import lombok.Setter;

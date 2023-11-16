@@ -1,7 +1,6 @@
 package br.com.tcc.feuc.controllers;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -17,65 +16,52 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
-
+import br.com.tcc.feuc.dto.request.ClienteRequestDTO;
+import br.com.tcc.feuc.dto.request.ClienteUpdateRequest;
 import br.com.tcc.feuc.entities.Cliente;
-import br.com.tcc.feuc.repositories.ClienteRepository;
 import br.com.tcc.feuc.service.ClienteServico;
-import io.swagger.annotations.ApiOperation;
-
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
+@Tag(description = "Conjunto de endpoints para manipulação do Cliente" , name = "Cliente")
 @RestController
 @RequestMapping("/cliente")
 public class ClienteController {
 
 	@Autowired
-	private ClienteRepository clienteRepository;
-	@Autowired
 	private ClienteServico clienteServico;
 
-	@ApiOperation("Retornado a listas dos clientes ")
+	@Operation(summary = "Retornado a listas dos clientes ")
 	@CrossOrigin("*")
 	@GetMapping()
 	public List<Cliente> findAll() {
-		List<Cliente> listar = clienteServico.Listar();
-		return listar;
+		log.info("Listar todos dados de cliente");
+		return clienteServico.Listar();
 	}
 
-	@ApiOperation("Salvando os dados dos clientes ")
+	@Operation(summary = "Salvando os dados dos clientes ")
 	@CrossOrigin("*")
 	@PostMapping()
 	@ResponseStatus(HttpStatus.CREATED)
-	public Cliente save(@RequestBody Cliente cliente) {
-		Cliente clienteSave = clienteServico.Salvar(cliente);
-		return clienteSave;
+	public Cliente save(@RequestBody ClienteRequestDTO dto) {
+		log.info("Salvar todos dados de cliente");
+		return clienteServico.Salvar(dto);
 	}
 
-	@ApiOperation("Retornado a lista pelo id do cliente ")
+	@Operation(summary = "Retornado a lista pelo id do cliente ")
 	@CrossOrigin("*")
 	@GetMapping("/{idCliente}")
-	public ResponseEntity<Cliente> buscarPorId(@PathVariable Long idCliente) {
-
-		if (!clienteRepository.existsById(idCliente)) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado no banco de dados");
-		}
-
-		Optional<Cliente> resultadoPorId = clienteRepository.findById(idCliente);
-		Cliente cliente = resultadoPorId.get();
-		return ResponseEntity.ok(cliente);
+	public Cliente buscarPorId(@PathVariable Long idCliente) {
+		return clienteServico.buscarPorId(idCliente);
 	}
 
-	@ApiOperation("Alterado os dados do cliente")
+	@Operation(summary = "Alterado os dados do cliente")
 	@CrossOrigin(origins = "*")
 	@PutMapping("/{idCliente}")
-	public ResponseEntity<Cliente> atualizar(@Valid @PathVariable Long idCliente, @RequestBody Cliente cliente) {
-
-		if (!clienteRepository.existsById(idCliente)) {
-			return ResponseEntity.notFound().build();
-
-		}
-		cliente.setIdCliente(idCliente);
-		cliente = clienteRepository.save(cliente);
-
-		return ResponseEntity.ok(cliente);
+	public ResponseEntity<ResponseEntity<Cliente>> atualizar(@Valid @PathVariable Long idCliente, @RequestBody ClienteUpdateRequest dto) {
+		log.info("Update dos dados clientes");
+		ResponseEntity<Cliente> dtoUpdate = clienteServico.atualizar(idCliente, dto);
+		return ResponseEntity.ok(dtoUpdate);
 	}
 }

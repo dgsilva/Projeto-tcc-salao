@@ -1,56 +1,66 @@
 package br.com.tcc.feuc.config;
 
-import java.util.Collections;
 
+import java.util.Arrays;
+import org.springdoc.core.GroupedOpenApi;
+import org.springdoc.core.customizers.OpenApiCustomiser;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.Contact;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
+import io.swagger.v3.oas.models.info.Contact;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.servers.Server;
 
 
 
 
 @Configuration
-@EnableSwagger2
 public class SwaggerConfiguration {
 	
 
-	/*
-	 * Método que configura o modo de geração da documentação do Swagger
-	 */
+	@Value("${urlExterna}")
+	String urlExterna;
+
+
 	@Bean
-	public Docket api() {
-		
-		return new Docket(DocumentationType.SWAGGER_2)
-				.select()
-				.apis(RequestHandlerSelectors.basePackage("br.com.tcc.feuc"))
-				.paths(PathSelectors.ant("/**"))
-				.build()
-				.apiInfo(apiInfo());
+	public GroupedOpenApi actuatorGroupedOpenApi() {
+		return GroupedOpenApi.builder().group("Actuator").pathsToMatch("/actuator/**")
+				.addOpenApiCustomiser(actuatorOpenApiCustomiser()).build();
 	}
-	
-	/*
-	 * Método para personalizar o conteudo da documentação
-	 */
-	private ApiInfo apiInfo() {
-		return new ApiInfo(
-				"API - Salão de beleza - TCC",
-				"Sistema de API desenvolvido em SprignBoot com Hibernate e JPA",
-				"Versão 1.0",
-				"Terms of Service",
-				new Contact("Andrey,Diego,Felipe Torneire e Felipe Guimarães", "", 
-						""),
-				"Licença da API",
-				"",
-				Collections.emptyList()
-				);
-	}	
+
+	@Bean
+	public GroupedOpenApi salaobelezaGroupedOpenApi() {
+		return GroupedOpenApi.builder().group("Salao-tcc").pathsToMatch("/**")
+				.addOpenApiCustomiser(salaobelezaOpenApiCustomiser())
+				.packagesToScan("br.com.tcc.feuc.controllers").build();
+	}
+
+	public OpenApiCustomiser actuatorOpenApiCustomiser() {
+		return openApi -> openApi.info(actuatorInfo())
+				.servers(Arrays.asList(new Server().url(urlExterna)));
+	}
+
+	public OpenApiCustomiser salaobelezaOpenApiCustomiser() {
+		return openApi -> openApi.info(commonsInfo())
+				.servers(Arrays.asList(new Server().url(urlExterna)));
+	}
+
+	private Info commonsInfo() {
+		return new Info().title("API Salão de Beleza").description("Documentação Api salao beleza.")
+				.license(new License().name("Apache License Version 2.0")
+						.url("https://www.apache.org/licenses/LICENSE-2.0\""))
+				.contact(new Contact().name("DBS").url("https://www.dbs.com.br/").email("diegobizerra@gmail.com"));
+	}
+
+	private Info actuatorInfo() {
+		return new Info().title("Actuator API").description("Actuator API Documentation.")
+				.license(new License().name("Apache License Version 2.0")
+						.url("https://www.apache.org/licenses/LICENSE-2.0\""))
+				.contact(new Contact().name("DBS").url("https://www.dbs.com.br/").email("diegobizerra@gmail.com"));
+	}
+
 	
 
 }

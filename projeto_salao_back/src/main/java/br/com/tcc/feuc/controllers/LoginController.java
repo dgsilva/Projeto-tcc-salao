@@ -16,21 +16,22 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.tcc.feuc.cryptography.MD5Cryptography;
+import br.com.tcc.feuc.dto.request.LoginPostRequest;
+import br.com.tcc.feuc.dto.response.LoginResponse;
 import br.com.tcc.feuc.entities.Administrador;
 import br.com.tcc.feuc.repositories.AdmRepository;
-import br.com.tcc.feuc.request.LoginPostRequest;
-import br.com.tcc.feuc.response.LoginResponse;
 import br.com.tcc.feuc.security.JwtSecurity;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
 public class LoginController {
 
 	@Autowired
 	private AdmRepository admRepositorio;
-	@ApiOperation("Realizado autenticação pelo login ")
+	
+	@Operation(summary = "Realizado autenticação pelo login ")
 	@CrossOrigin("*")
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public ResponseEntity<LoginResponse>post(@RequestBody LoginPostRequest request){
