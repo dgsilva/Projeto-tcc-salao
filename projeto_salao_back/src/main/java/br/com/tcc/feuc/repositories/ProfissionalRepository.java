@@ -3,11 +3,9 @@ package br.com.tcc.feuc.repositories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
 
 import br.com.tcc.feuc.entities.Profissional;
 
-@Repository
 public interface ProfissionalRepository extends JpaRepository<Profissional, Long>{
 	
 	@Query("from Profissional p where p.email = :email")

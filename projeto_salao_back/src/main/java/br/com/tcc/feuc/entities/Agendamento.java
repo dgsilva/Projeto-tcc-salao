@@ -1,5 +1,8 @@
 package br.com.tcc.feuc.entities;
 
+
+import java.time.LocalDate;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,7 +24,7 @@ public class Agendamento {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idAgendamento;
 	
-	private String data;
+	private LocalDate data;
 	
 	private String hora;
 
