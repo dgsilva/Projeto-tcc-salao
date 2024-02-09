@@ -2,6 +2,8 @@ package br.com.tcc.feuc.controllers;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -35,7 +37,7 @@ public class ServicoControllers {
 	@Operation(summary = "Salvando os dados dos serviços")
 	@CrossOrigin("*")
 	@PostMapping
-	public Servico create(@RequestBody ServicoRequestDTO dto) {
+	public Servico create(@Valid @RequestBody ServicoRequestDTO dto) {
 		return serviceService.create(dto);
 		
 	}
