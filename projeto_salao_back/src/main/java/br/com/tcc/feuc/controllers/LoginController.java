@@ -10,9 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.tcc.feuc.cryptography.MD5Cryptography;
@@ -26,6 +26,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
+@RequestMapping("/login")
 public class LoginController {
 
 	@Autowired
@@ -33,7 +34,7 @@ public class LoginController {
 	
 	@Operation(summary = "Realizado autenticação pelo login ")
 	@CrossOrigin("*")
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	@PostMapping
 	public ResponseEntity<LoginResponse>post(@RequestBody LoginPostRequest request){
 		
 		try {
@@ -65,15 +66,13 @@ public class LoginController {
 
 				List<GrantedAuthority> grantedAuthorities = AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_USER");
 
-				// COTI_JWT -> nome da aplicação que gerou o token!
-				String token = Jwts.builder().setId("DROGARIA_JWT").setSubject(emailUsuario)
+				//  -> nome da aplicação que gerou o token!
+				return Jwts.builder().setId("SALAO_JWT").setSubject(emailUsuario)
 						.claim("authorities",
 								grantedAuthorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
 						.setIssuedAt(new Date(System.currentTimeMillis()))
 						.setExpiration(new Date(System.currentTimeMillis() + 6000000))
 						.signWith(SignatureAlgorithm.HS512, JwtSecurity.SECRET.getBytes()).compact();
-
-				return token;
 
 			}
 }
