@@ -9,8 +9,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
-
 import br.com.tcc.feuc.dto.request.ProfissionalResquestDTO;
 import br.com.tcc.feuc.dto.request.ProfissionalUpdateDTO;
 import br.com.tcc.feuc.entities.Profissional;
@@ -26,7 +24,7 @@ public class ProfissionalService {
 	@Autowired
 	private ModelMapper modelMapper;
 
-	public Profissional Salvar(@RequestBody ProfissionalResquestDTO dto) {
+	public Profissional Salvar(ProfissionalResquestDTO dto) {
 
 		// REGRA: Não permitir o cadastro de um cliente com email duplicado
 		if (profissionalRepository.findByEmail(dto.getEmail()) != null) {
@@ -52,8 +50,7 @@ public class ProfissionalService {
 	}
 
 	public List<Profissional> Listar() {
-		List<Profissional> profissionalReturn = profissionalRepository.findAll();
-		return profissionalReturn;
+		return profissionalRepository.findAll();
 	}
 	
 	 public ResponseEntity<Profissional> atualizar(Long idProfissional, ProfissionalUpdateDTO dto) {

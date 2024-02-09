@@ -2,6 +2,8 @@ package br.com.tcc.feuc.controllers;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -36,7 +38,7 @@ public class ProfissionalControllers {
 	@Operation(summary = "Salvando os dados do Profissional")
 	@CrossOrigin("*")
 	@PostMapping
-	public Profissional create(@RequestBody ProfissionalResquestDTO dto) {
+	public Profissional create(@Valid @RequestBody ProfissionalResquestDTO dto) {
 		return profissionalService.Salvar(dto);
 	}
 	

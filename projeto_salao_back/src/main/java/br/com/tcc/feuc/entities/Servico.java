@@ -31,7 +31,7 @@ public class Servico {
 	@Column
 	private String descricao;
 	@Column
-	private double valor;
+	private Double valor;
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Profissional profissional;
